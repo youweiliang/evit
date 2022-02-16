@@ -40,7 +40,7 @@ We provide EViT-DeiT-S models pretrained on ImageNet 2012.
 
 
 # Preparation
-The reported results in the paper were obtained with models trained on NVIDIA A100 using Python3.6 and the following packages
+The reported results in the paper were obtained with models trained with 16 NVIDIA A100 GPUs using Python3.6 and the following packages
 ```
 torch==1.9.0
 torchvision==0.10.0
@@ -81,7 +81,7 @@ git clone https://github.com/youweiliang/evit.git
 Change directory to the cloned repository by running `cd evit`, install necessary packages, and prepare the datasets.
 
 ## Training
-To train `EViT/0.7-DeiT-S` on ImageNet, set the `datapath` (path to dataset) and `logdir` (logging directory) in `run_code.sh` properly and run `bash ./run_code.sh` (`--nproc_per_node` should be modified if necessary).
+To train `EViT/0.7-DeiT-S` on ImageNet, set the `datapath` (path to dataset) and `logdir` (logging directory) in `run_code.sh` properly and run `bash ./run_code.sh` (`--nproc_per_node` should be modified if necessary). Note that the batch size in the paper is 16x128=2048.
 
 Set `--base_keep_rate` in `run_code.sh` to use a different keep rate, and set `--fuse_token` to configure whether to use inattentive token fusion. 
 
