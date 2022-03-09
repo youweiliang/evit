@@ -10,7 +10,7 @@ python3 -m torch.distributed.launch --nproc_per_node=8 --use_env \
 	--fuse_token \
 	--base_keep_rate 0.7 \
 	--input-size 224 \
-	--batch-size 128 \
+	--batch-size 256 \
 	--warmup-epochs 5 \
 	--shrink_start_epoch 10 \
 	--shrink_epochs 100 \
