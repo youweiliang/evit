@@ -25,22 +25,22 @@ url={https://openreview.net/forum?id=BjyvwnXXVn_}
 
 We provide EViT-DeiT-S models pretrained on ImageNet 2012.
 
-| Token fusion | Keep rate | Acc@1 | Acc@5 | #Params | URL |
-| --- | --- | --- | --- | --- | --- |
-| &check; | 0.9 | 79.8 | 95.0 | 22.1M | [model](https://drive.google.com/file/d/1CmROmlLV-7nyYY-Bhph8_5ut3wFwqvny/view?usp=sharing) |
-| &check; | 0.8 | 79.8 | 94.9 | 22.1M | [model](https://drive.google.com/file/d/1BTJyIe0zVK3zYXz3BzIlSC4YZCnZu7cJ/view?usp=sharing) |
-| &check; | 0.7 | 79.5 | 94.8 | 22.1M | [model](https://drive.google.com/file/d/1FfvdEBss9f8gexjqEY8vOSUQe_8qwYuL/view?usp=sharing) |
-| &check; | 0.6 | 78.9 | 94.5 | 22.1M | [model](https://drive.google.com/file/d/1D1m067jDbyG0g2UjyBMaJ4NTT2Ad8vrv/view?usp=sharing) |
-| &check; | 0.5 | 78.5 | 94.2 | 22.1M | [model](https://drive.google.com/file/d/1-nyxAlRWjD2icbgj3Y3YWcCmYj9sTgfD/view?usp=sharing) |
-| &cross; | 0.9 | 79.9 | 94.9 | 22.1M | [model](https://drive.google.com/file/d/1tSaPLged8ED2RTiN5ttSmeTNIw1aNNwV/view?usp=sharing) |
-| &cross; | 0.8 | 79.7 | 94.8 | 22.1M | [model](https://drive.google.com/file/d/1zdFbHk-gOw_Wiid5_Z8NFcBa1HMI-JF-/view?usp=sharing) |
-| &cross; | 0.7 | 79.4 | 94.7 | 22.1M | [model](https://drive.google.com/file/d/1VCZGphW34rFWZDXOoF7XO4EJfRLZ-YB8/view?usp=sharing) |
-| &cross; | 0.6 | 79.1 | 94.5 | 22.1M | [model](https://drive.google.com/file/d/1okYcKryyD6FFPG9v5r40R28SRNfVZ5X0/view?usp=sharing) |
-| &cross; | 0.5 | 78.4 | 94.1 | 22.1M | [model](https://drive.google.com/file/d/1qsPeLN5ytLO8pM7lUuj5bi6pyMhjiSJO/view?usp=sharing) |
+| Token fusion | Keep rate | Acc@1 | Acc@5 | MACs (G) | Throughput (img/s) | #Params | URL |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| &check; | 0.9 | 79.8 | 95.0 | 4.0 | 3197 | 22.1M | [model](https://drive.google.com/file/d/1CmROmlLV-7nyYY-Bhph8_5ut3wFwqvny/view?usp=sharing) |
+| &check; | 0.8 | 79.8 | 94.9 | 3.5 | 3619 | 22.1M | [model](https://drive.google.com/file/d/1BTJyIe0zVK3zYXz3BzIlSC4YZCnZu7cJ/view?usp=sharing) |
+| &check; | 0.7 | 79.5 | 94.8 | 3.0 | 4385 | 22.1M | [model](https://drive.google.com/file/d/1FfvdEBss9f8gexjqEY8vOSUQe_8qwYuL/view?usp=sharing) |
+| &check; | 0.6 | 78.9 | 94.5 | 2.6 | 4722 | 22.1M | [model](https://drive.google.com/file/d/1D1m067jDbyG0g2UjyBMaJ4NTT2Ad8vrv/view?usp=sharing) |
+| &check; | 0.5 | 78.5 | 94.2 | 2.3 | 5408 | 22.1M | [model](https://drive.google.com/file/d/1-nyxAlRWjD2icbgj3Y3YWcCmYj9sTgfD/view?usp=sharing) |
+| &cross; | 0.9 | 79.9 | 94.9 | 4.0 | 3201 | 22.1M | [model](https://drive.google.com/file/d/1tSaPLged8ED2RTiN5ttSmeTNIw1aNNwV/view?usp=sharing) |
+| &cross; | 0.8 | 79.7 | 94.8 | 3.5 | 3772 | 22.1M | [model](https://drive.google.com/file/d/1zdFbHk-gOw_Wiid5_Z8NFcBa1HMI-JF-/view?usp=sharing) |
+| &cross; | 0.7 | 79.4 | 94.7 | 3.0 | 4249 | 22.1M | [model](https://drive.google.com/file/d/1VCZGphW34rFWZDXOoF7XO4EJfRLZ-YB8/view?usp=sharing) |
+| &cross; | 0.6 | 79.1 | 94.5 | 2.6 | 4967 | 22.1M | [model](https://drive.google.com/file/d/1okYcKryyD6FFPG9v5r40R28SRNfVZ5X0/view?usp=sharing) |
+| &cross; | 0.5 | 78.4 | 94.1 | 2.3 | 5325 | 22.1M | [model](https://drive.google.com/file/d/1qsPeLN5ytLO8pM7lUuj5bi6pyMhjiSJO/view?usp=sharing) |
 
 
 # Preparation
-The reported results in the paper were obtained with models trained with 16 NVIDIA A100 GPUs using Python3.6 and the following packages
+The reported results in the paper were obtained with models trained using Python3.6 and the following packages
 ```
 torch==1.9.0
 torchvision==0.10.0
@@ -89,7 +89,7 @@ Set `--base_keep_rate` in `run_code.sh` to use a different keep rate, and set `-
 To training on images with a (higher) resolution `h`, set `--input-size h` in `run_code.sh`.
 
 ### Multinode training
-Please refer to [DeiT](https://github.com/facebookresearch/deit) for multinode training.
+Please refer to [DeiT](https://github.com/facebookresearch/deit) for multinode training using Slurm and [submitit](https://github.com/facebookincubator/submitit).
 
 ## Finetuning
 First set the `datapath`, `logdir`, and `ckpt` (the model checkpoint for finetuning) in `run_code.sh`, and then run `bash ./finetune.sh`.
@@ -101,6 +101,8 @@ python3 main.py --model deit_small_patch16_shrink_base --fuse_token --base_keep_
 ```
 You can also pass `--dist-eval` to use multiple GPUs for evaluation. 
 
+### Throughput
+You can measure the throughput of the model by passing `--test_speed` or `--only_test_speed` to `main.py`.
 
 # License
 This repository is released under the Apache 2.0 license as found in the [LICENSE](LICENSE) file.
