@@ -315,7 +315,7 @@ def main(args):
 
     output_dir = Path(args.output_dir)
 
-    if args.test_speed and utils.is_main_process():
+    if (args.test_speed or args.only_test_speed) and utils.is_main_process():
         # test model throughput for three times to ensure accuracy
         inference_speed = speed_test(model)
         print('inference_speed (inaccurate):', inference_speed, 'images/s')
