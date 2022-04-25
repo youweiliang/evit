@@ -39,11 +39,7 @@ __ConvViT__
 
 convit_small
 convit_base
-__LeViT__
-levit_128
-levit_192
-levit_256
-levit_384
+
 __NFNet__
 nfnet_f0
 __EfficientNet__
