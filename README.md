@@ -108,4 +108,4 @@ You can measure the throughput of the model by passing `--test_speed` or `--only
 This repository is released under the Apache 2.0 license as found in the [LICENSE](LICENSE) file.
 
 # Acknowledgement
-We would like to think the authors of [DeiT](https://github.com/facebookresearch/deit), based on which this project is built.
+We would like to think the authors of [DeiT](https://github.com/facebookresearch/deit) and [timm](https://github.com/rwightman/pytorch-image-models), based on which this codebase was built.
