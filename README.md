@@ -102,7 +102,7 @@ python3 main.py --model deit_small_patch16_shrink_base --fuse_token --base_keep_
 You can also pass `--dist-eval` to use multiple GPUs for evaluation. 
 
 ### Throughput
-You can measure the throughput of the model by passing `--test_speed` or `--only_test_speed` to `main.py`.
+You can measure the throughput of the model by passing `--test_speed` or `--only_test_speed` to `main.py`. We also provide a script `speed_test.py` for comparing the throughput of many vision backbones (as shown in Figure 4 in the paper).
 
 # License
 This repository is released under the Apache 2.0 license as found in the [LICENSE](LICENSE) file.
