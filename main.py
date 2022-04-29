@@ -430,7 +430,7 @@ def main(args):
         return
 
     if args.visualize_mask:
-        visualize_mask(data_loader_val, model, device, args.output_dir, args.n_visualization)
+        visualize_mask(data_loader_val, model, device, args.output_dir, args.n_visualization, args.fuse_token)
         return
 
     print(f"Start training for {args.epochs} epochs")

@@ -31,17 +31,16 @@ def get_deeper_idx(idx1, idx2):
     return torch.gather(idx1, dim=1, index=idx2)
 
 
-def get_real_idx(idxs, img_size=224, patch_size=16):
+def get_real_idx(idxs, fuse_token):
     # nh = img_size // patch_size
     # npatch = nh ** 2
-    for i in range(len(idxs)):
-        idxs[i] = idxs[i][:, 1:] - 1  # remove cls token idx
 
     # gather real idx
     for i in range(1, len(idxs)):
         tmp = idxs[i - 1]
-        B = tmp.size(0)
-        tmp = torch.cat([tmp, torch.zeros(B, 1, dtype=tmp.dtype, device=tmp.device)], dim=1)
+        if fuse_token:
+            B = tmp.size(0)
+            tmp = torch.cat([tmp, torch.zeros(B, 1, dtype=tmp.dtype, device=tmp.device)], dim=1)
         idxs[i] = torch.gather(tmp, dim=1, index=idxs[i])
     return idxs
 

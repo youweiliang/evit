@@ -268,11 +268,6 @@ class Block(nn.Module):
         x = x + self.drop_path(self.mlp(self.norm2(x)))
         n_tokens = x.shape[1] - 1
         if get_idx and index is not None:
-            idx = idx[:, :, 0]
-            # if self.fuse_token:
-            #     # always set the idx of the extra token to 0
-            #     B = idx.size(0)
-            #     idx = torch.cat([idx, torch.zeros(B, 1, dtype=idx.dtype, device=idx.device)], dim=1)  # [B, M]
             return x, n_tokens, idx
         return x, n_tokens, None
 

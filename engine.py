@@ -155,7 +155,7 @@ def get_acc(data_loader, model, device, keep_rate=None, tokens=None):
 
 
 @torch.no_grad()
-def visualize_mask(data_loader, model, device, output_dir, n_visualization, keep_rate=None):
+def visualize_mask(data_loader, model, device, output_dir, n_visualization, fuse_token, keep_rate=None):
     criterion = torch.nn.CrossEntropyLoss()
 
     metric_logger = utils.MetricLogger(delimiter="  ")
@@ -183,7 +183,7 @@ def visualize_mask(data_loader, model, device, output_dir, n_visualization, keep
         # denormalize
         images = images * std + mean
 
-        idxs = get_real_idx(idx)
+        idxs = get_real_idx(idx, fuse_token)
         for jj, idx in enumerate(idxs):
             masked_img = mask(images, patch_size=16, idx=idx)
             save_img_batch(masked_img, output_dir, file_name='img_{}' + f'_l{jj}.jpg', start_idx=world_size * B * ii + rank * B)
