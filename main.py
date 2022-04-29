@@ -23,7 +23,7 @@ from timm.optim import create_optimizer
 from timm.utils import NativeScaler, get_state_dict, ModelEma
 
 from datasets import build_dataset
-from engine import train_one_epoch, evaluate
+from engine import train_one_epoch, evaluate, visualize_mask
 from losses import DistillationLoss
 from samplers import RASampler
 import models
@@ -177,6 +177,8 @@ def get_args_parser():
     parser.add_argument('--start_epoch', default=0, type=int, metavar='N',
                         help='start epoch')
     parser.add_argument('--eval', action='store_true', help='Perform evaluation only')
+    parser.add_argument('--visualize_mask', action='store_true', help='Visualize the dropped image patches and then exit')
+    parser.add_argument('--n_visualization', default=128, type=int)
     parser.add_argument('--dist-eval', action='store_true', default=False, help='Enabling distributed evaluation')
     parser.add_argument('--num_workers', default=10, type=int)
     parser.add_argument('--pin-mem', action='store_true',
@@ -425,6 +427,10 @@ def main(args):
     if args.eval:
         test_stats = evaluate(data_loader_val, model, device)
         print(f"Accuracy of the network on the {len(dataset_val)} test images: {test_stats['acc1']:.1f}%")
+        return
+
+    if args.visualize_mask:
+        visualize_mask(data_loader_val, model, device, args.output_dir, args.n_visualization)
         return
 
     print(f"Start training for {args.epochs} epochs")

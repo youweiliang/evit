@@ -242,7 +242,7 @@ class Block(nn.Module):
         self.mlp_hidden_dim = mlp_hidden_dim
         self.fuse_token = fuse_token
 
-    def forward(self, x, keep_rate=None, tokens=None):
+    def forward(self, x, keep_rate=None, tokens=None, get_idx=False):
         if keep_rate is None:
             keep_rate = self.keep_rate  # this is for inference, use the default keep rate
         B, N, C = x.shape
@@ -267,7 +267,14 @@ class Block(nn.Module):
 
         x = x + self.drop_path(self.mlp(self.norm2(x)))
         n_tokens = x.shape[1] - 1
-        return x, n_tokens
+        if get_idx and index is not None:
+            idx = idx[:, :, 0]
+            # if self.fuse_token:
+            #     # always set the idx of the extra token to 0
+            #     B = idx.size(0)
+            #     idx = torch.cat([idx, torch.zeros(B, 1, dtype=idx.dtype, device=idx.device)], dim=1)  # [B, M]
+            return x, n_tokens, idx
+        return x, n_tokens, None
 
 
 class EViT(nn.Module):
@@ -391,7 +398,7 @@ class EViT(nn.Module):
     def name(self):
         return "EViT"
 
-    def forward_features(self, x, keep_rate=None, tokens=None):
+    def forward_features(self, x, keep_rate=None, tokens=None, get_idx=False):
         _, _, h, w = x.shape
         if not isinstance(keep_rate, (tuple, list)):
             keep_rate = (keep_rate, ) * self.depth
@@ -422,17 +429,21 @@ class EViT(nn.Module):
         x = self.pos_drop(x + pos_embed)
 
         left_tokens = []
+        if get_idx:
+            idxs = []
         for i, blk in enumerate(self.blocks):
-            x, left_token = blk(x, keep_rate[i], tokens[i])
+            x, left_token, idx = blk(x, keep_rate[i], tokens[i], get_idx)
             left_tokens.append(left_token)
+            if idx is not None:
+                idxs.append(idx)
         x = self.norm(x)
         if self.dist_token is None:
-            return self.pre_logits(x[:, 0]), left_tokens
+            return self.pre_logits(x[:, 0]), left_tokens, idxs
         else:
-            return x[:, 0], x[:, 1]
+            return x[:, 0], x[:, 1], idxs
 
-    def forward(self, x, keep_rate=None, tokens=None, speed_test=False):
-        x, left_tokens = self.forward_features(x, keep_rate, tokens)
+    def forward(self, x, keep_rate=None, tokens=None, get_idx=False):
+        x, _, idxs = self.forward_features(x, keep_rate, tokens, get_idx)
         if self.head_dist is not None:
             x, x_dist = self.head(x[0]), self.head_dist(x[1])  # x must be a tuple
             if self.training and not torch.jit.is_scripting():
@@ -442,8 +453,8 @@ class EViT(nn.Module):
                 return (x + x_dist) / 2
         else:
             x = self.head(x)
-        if speed_test:
-            return x, left_tokens
+        if get_idx:
+            return x, idxs
         return x
 
 
