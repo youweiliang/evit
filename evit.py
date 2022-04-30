@@ -424,8 +424,7 @@ class EViT(nn.Module):
         x = self.pos_drop(x + pos_embed)
 
         left_tokens = []
-        if get_idx:
-            idxs = []
+        idxs = []
         for i, blk in enumerate(self.blocks):
             x, left_token, idx = blk(x, keep_rate[i], tokens[i], get_idx)
             left_tokens.append(left_token)
