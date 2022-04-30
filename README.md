@@ -49,6 +49,7 @@ tensorboardX==2.4
 torchprofile==0.0.4
 lmdb==1.2.1
 pyarrow==5.0.0
+einops==0.4.1
 ```
 These packages can be installed by running `pip install -r requirements.txt`.
 
