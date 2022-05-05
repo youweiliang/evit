@@ -5,7 +5,11 @@ This repository contains PyTorch evaluation code, training code and pretrained _
 > 
 > _Youwei Liang, Chongjian Ge, Zhan Tong, Yibing Song, Jue Wang, Pengtao Xie_
 
-The proposed EViT models obtain competitive tradeoffs in terms of speed / precision:
+The proposed EViT method reduces computation by progressively discarding or fusing inattentive tokens in Vision Transformers, as illustrated in the following figure.
+
+![IMG](images/masked_img.png)
+
+EViT obtains competitive tradeoffs in terms of speed / precision:
 
 ![EViT](images/tradeoff.png)
 
