@@ -1,7 +1,7 @@
 # Expediting Vision Transformers via Token Reorganizations
 
 This repository contains PyTorch evaluation code, training code and pretrained __EViT__ models for the ICLR 2022 Spotlight paper:
-> [Not All Patches are What You Need: Expediting Vision Transformers via Token Reorganizations](https://openreview.net/forum?id=BjyvwnXXVn_)
+> [Not All Patches are What You Need: Expediting Vision Transformers via Token Reorganizations](https://arxiv.org/abs/2202.07800)
 > 
 > _Youwei Liang, Chongjian Ge, Zhan Tong, Yibing Song, Jue Wang, Pengtao Xie_
 
