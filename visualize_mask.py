@@ -39,6 +39,8 @@ def get_real_idx(idxs, fuse_token):
     for i in range(1, len(idxs)):
         tmp = idxs[i - 1]
         if fuse_token:
+            # Pad zero index to the end so that it accounts for the fused token.
+            # This is not strictly correct at the first place, but a hack to make the gather work.
             B = tmp.size(0)
             tmp = torch.cat([tmp, torch.zeros(B, 1, dtype=tmp.dtype, device=tmp.device)], dim=1)
         idxs[i] = torch.gather(tmp, dim=1, index=idxs[i])

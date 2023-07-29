@@ -184,8 +184,9 @@ def visualize_mask(data_loader, model, device, output_dir, n_visualization, fuse
         images = images * std + mean
 
         idxs = get_real_idx(idx, fuse_token)
+        masked_img = images
         for jj, idx in enumerate(idxs):
-            masked_img = mask(images, patch_size=16, idx=idx)
+            masked_img = mask(masked_img, patch_size=16, idx=idx)
             save_img_batch(masked_img, output_dir, file_name='img_{}' + f'_l{jj}.jpg', start_idx=world_size * B * ii + rank * B)
 
         save_img_batch(images, output_dir, file_name='img_{}_a.jpg', start_idx=world_size * B * ii + rank * B)
