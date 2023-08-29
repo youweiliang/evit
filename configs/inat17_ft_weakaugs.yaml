@@ -1,0 +1,6 @@
+save_images: 100000
+
+defaults:
+    dataset: 'datasets/inat17.yaml'
+    settings: 'settings/ft.yaml'
+    augs: 'augs/weakaugs.yaml'

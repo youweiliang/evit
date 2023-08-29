@@ -12,7 +12,8 @@ import time
 import torch
 import torch.backends.cudnn as cudnn
 import json
-
+import wandb 
+import yaml
 from pathlib import Path
 
 from timm.data import Mixup
@@ -34,19 +35,48 @@ from tensorboardX import SummaryWriter
 import warnings
 warnings.filterwarnings('ignore', 'Argument interpolation should be of type InterpolationMode instead of int')
 
+def yaml_config_hook(config_file):
+    """
+    Custom YAML config loader, which can include other yaml files (I like using config files
+    insteaad of using argparser)
+    """
 
+    # load yaml files in the nested 'defaults' section, which include defaults for experiments
+    with open(config_file) as f:
+        cfg = yaml.safe_load(f)
+        for d in cfg.get("defaults", []):
+            fp = cfg.get("defaults").get(d)
+            cf = os.path.join(os.path.dirname(config_file), fp)
+            with open(cf) as f:
+                val = yaml.safe_load(f)
+                print(val)
+                cfg.update(val)
+
+    if "defaults" in cfg.keys():
+        del cfg["defaults"]
+
+    return cfg
+
+
+def adjust_config(args):
+    if args.cfg:
+        config = yaml_config_hook(os.path.abspath(args.cfg))
+        for k, v in config.items():
+            if hasattr(args, k):
+                setattr(args, k, v)
+                
 def get_args_parser():
     parser = argparse.ArgumentParser('DeiT training and evaluation script', add_help=False)
-    parser.add_argument('--batch-size', default=64, type=int)
+    parser.add_argument('--batch-size', default=32, type=int)
     parser.add_argument('--epochs', default=300, type=int)
 
     # arguments related to the shrinking of inattentive tokens
     parser.add_argument('--test_speed', action='store_true', help='whether to measure throughput of model')
     parser.add_argument('--only_test_speed', action='store_true', help='only measure throughput of model')
-    parser.add_argument('--fuse_token', action='store_true', help='whether to fuse the inattentive tokens')
+    parser.add_argument('--fuse_token', default='true', action='store_true', help='whether to fuse the inattentive tokens')
     parser.add_argument('--base_keep_rate', type=float, default=0.7,
                         help='Base keep rate (default: 0.7)')
-    parser.add_argument('--shrink_epochs', default=0, type=int, 
+    parser.add_argument('--shrink_epochs', default=100, type=int, 
                         help='how many epochs to perform gradual shrinking of inattentive tokens')
     parser.add_argument('--shrink_start_epoch', default=10, type=int, 
                         help='on which epoch to start shrinking of inattentive tokens')
@@ -159,16 +189,16 @@ def get_args_parser():
     parser.add_argument('--finetune', default='', help='finetune from checkpoint')
 
     # Dataset parameters
-    parser.add_argument('--data-path', default='/datasets01/imagenet_full_size/061417/', type=str,
+    parser.add_argument('--dataset_root_path', default='../../data/cub/CUB_200_2011', type=str,
                         help='dataset path')
-    parser.add_argument('--data-set', default='IMNET', choices=['CIFAR', 'IMNET', 'INAT', 'INAT19'],
+    parser.add_argument('--dataset_name', default=None,
                         type=str, help='Image Net dataset path')
-    parser.add_argument('--use-lmdb', action='store_true', help='use Image Net lmdb dataset (for data-set==IMNET)')
+    parser.add_argument('--use-lmdb', action='store_true', help='use Image Net lmdb dataset (for data_set==IMNET)')
     parser.add_argument('--inat-category', default='name',
                         choices=['kingdom', 'phylum', 'class', 'order', 'supercategory', 'family', 'genus', 'name'],
                         type=str, help='semantic granularity')
 
-    parser.add_argument('--output_dir', default='',
+    parser.add_argument('--output_dir', default='.',
                         help='path where to save, empty for no saving')
     parser.add_argument('--device', default='cuda',
                         help='device to use for training / testing')
@@ -179,7 +209,7 @@ def get_args_parser():
     parser.add_argument('--eval', action='store_true', help='Perform evaluation only')
     parser.add_argument('--visualize_mask', action='store_true', help='Visualize the dropped image patches and then exit')
     parser.add_argument('--n_visualization', default=128, type=int)
-    parser.add_argument('--dist-eval', action='store_true', default=False, help='Enabling distributed evaluation')
+    parser.add_argument('--dist-eval', action='store_true', default=True, help='Enabling distributed evaluation')
     parser.add_argument('--num_workers', default=10, type=int)
     parser.add_argument('--pin-mem', action='store_true',
                         help='Pin CPU memory in DataLoader for more efficient (sometimes) transfer to GPU.')
@@ -191,8 +221,45 @@ def get_args_parser():
     parser.add_argument('--world_size', default=1, type=int,
                         help='number of distributed processes')
     parser.add_argument('--dist_url', default='env://', help='url used to set up distributed training')
+    parser.add_argument('--custom_mean_std', action='store_true', help='custom mean/std')
+
+    # folders with images (can be same: those where it's all stored in 'data')
+    parser.add_argument('--folder_train', type=str, default='images',
+                        help='the directory where images are stored, ex: dataset_root_path/train/')
+    parser.add_argument('--folder_val', type=str, default='images',
+                        help='the directory where images are stored, ex: dataset_root_path/val/')
+    parser.add_argument('--folder_test', type=str, default='images',
+                        help='the directory where images are stored, ex: dataset_root_path/test/')
+    
+    # df files with img_dir, class_id
+    parser.add_argument('--df_train', type=str, default='train.csv',
+                        help='the df csv with img_dirs, targets, def: train.csv')
+    parser.add_argument('--df_trainval', type=str, default='train_val.csv',
+                        help='the df csv with img_dirs, targets, def: train_val.csv')
+    parser.add_argument('--df_val', type=str, default='val.csv',
+                        help='the df csv with img_dirs, targets, def: val.csv')
+    parser.add_argument('--df_test', type=str, default='test.csv',
+                        help='the df csv with img_dirs, targets, root/test.csv')
+    parser.add_argument('--df_classid_classname', type=str, default='classid_classname.csv',
+                        help='the df csv with classnames and class ids, root/classid_classname.csv')
+
+    parser.add_argument('--train_trainval', action='store_false',
+                        help='when true uses trainval for train and evaluates on test \
+                        otherwise use train for train and evaluates on val')
+    parser.add_argument("--cfg", type=str,
+                        help="If using it overwrites args and reads yaml file in given path")
+    parser.add_argument("--cfg_is", type=str,
+                        help="If using it overwrites args and reads yaml file in given path")
+    parser.add_argument("--cfg_method", type=str,
+                        help="If using it overwrites args and reads yaml file in given path")
+    parser.add_argument("--project_name", type=str, default='TokenDroppingFusion')
+
     return parser
 
+
+
+def count_params_single(model):
+    return sum([p.numel() for p in model.parameters()])
 
 def main(args):
     utils.init_distributed_mode(args)
@@ -268,7 +335,7 @@ def main(args):
         args.model,
         base_keep_rate=args.base_keep_rate,
         drop_loc=eval(args.drop_loc),
-        pretrained=False,
+        pretrained=True,
         num_classes=args.nb_classes,
         drop_rate=args.drop,
         drop_path_rate=args.drop_path,
@@ -276,6 +343,8 @@ def main(args):
         fuse_token=args.fuse_token,
         img_size=(args.input_size, args.input_size)
     )
+
+    no_params = count_params_single(model)
 
     if args.finetune:
         if args.finetune.startswith('https'):
@@ -360,8 +429,6 @@ def main(args):
     if args.test_speed and utils.is_main_process():
         log_func1(n_parameters=n_parameters * 1e-6)
 
-    linear_scaled_lr = args.lr * args.batch_size * utils.get_world_size() / 512.0
-    args.lr = linear_scaled_lr
     optimizer = create_optimizer(args, model_without_ddp)
     loss_scaler = NativeScaler()
 
@@ -392,7 +459,7 @@ def main(args):
                 args.teacher_path, map_location='cpu', check_hash=True)
         else:
             checkpoint = torch.load(args.teacher_path, map_location='cpu')
-        teacher_model.load_state_dict(checkpoint['model'])
+        teacher_model.load_state_dict(checkpoint['model'], strict=False)
         teacher_model.to(device)
         teacher_model.eval()
 
@@ -414,15 +481,15 @@ def main(args):
                 args.resume, map_location='cpu', check_hash=True)
         else:
             checkpoint = torch.load(args.resume, map_location='cpu')
-        model_without_ddp.load_state_dict(checkpoint['model'])
+        model_without_ddp.load_state_dict(checkpoint['model'], strict=False)
         if not args.eval and 'optimizer' in checkpoint and 'lr_scheduler' in checkpoint and 'epoch' in checkpoint:
-            optimizer.load_state_dict(checkpoint['optimizer'])
-            lr_scheduler.load_state_dict(checkpoint['lr_scheduler'])
+            optimizer.load_state_dict(checkpoint['optimizer'], strict=False)
+            lr_scheduler.load_state_dict(checkpoint['lr_scheduler'], strict=False)
             args.start_epoch = checkpoint['epoch'] + 1
             if args.model_ema:
                 utils._load_checkpoint_for_ema(model_ema, checkpoint['model_ema'])
             if 'scaler' in checkpoint:
-                loss_scaler.load_state_dict(checkpoint['scaler'])
+                loss_scaler.load_state_dict(checkpoint['scaler'], strict=False)
 
     if args.eval:
         test_stats = evaluate(data_loader_val, model, device)
@@ -436,6 +503,11 @@ def main(args):
     print(f"Start training for {args.epochs} epochs")
     start_time = time.time()
     max_accuracy = 0.0
+
+    wandb.init(config=args, project="TokenDroppingFusion", entity="nycu_pcs", settings=wandb.Settings(start_method="fork"))  # project=project_name
+    run_name = f"evit_{args.lr}_{args.dataset_name}"
+    wandb.run.name = run_name
+
     for epoch in range(args.start_epoch, args.epochs):
         if args.distributed:
             data_loader_train.sampler.set_epoch(epoch)
@@ -476,7 +548,7 @@ def main(args):
                      **test_stats1,
                      'epoch': epoch,
                      'n_parameters': n_parameters}
-
+        wandb.log(log_stats)
         if args.output_dir and utils.is_main_process():
             with (output_dir / "log.txt").open("a") as f:
                 f.write(json.dumps(log_stats) + "\n")
@@ -485,13 +557,29 @@ def main(args):
                 writer.add_scalar('test_acc5', test_stats["acc5"], epoch)
 
     total_time = time.time() - start_time
+    time_total = round(total_time / 60, 2)  # mins
     total_time_str = str(datetime.timedelta(seconds=int(total_time)))
     print('Training time {}'.format(total_time_str))
+
+    no_params = round(no_params / (1e6), 2)  # millions of parameters
+
+    max_memory = torch.cuda.max_memory_reserved() / (1024 ** 3)
+    max_memory = round(max_memory, 2)
+
+    test_acc = test_stats['acc1']
+    
+    wandb.run.summary['no_params'] = no_params
+    wandb.run.summary['time_total'] = time_total
+    wandb.run.summary['max_memory'] = max_memory
+    wandb.run.summary['test_acc'] = test_acc
+    wandb.run.summary['best_acc'] = max_accuracy
+    wandb.finish()
 
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser('DeiT training and evaluation script', parents=[get_args_parser()])
     args = parser.parse_args()
+    adjust_config(args)
     if args.output_dir:
         Path(args.output_dir).mkdir(parents=True, exist_ok=True)
     main(args)

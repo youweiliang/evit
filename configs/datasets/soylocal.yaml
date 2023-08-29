@@ -1,0 +1,10 @@
+dataset_name: 'soylocal'
+dataset_root_path: '../../data/soylocal'
+df_train: 'train.csv'
+df_trainval: train_val.csv
+df_val: 'val.csv'
+df_test: 'test.csv'
+folder_train: 'soybean200_square'
+folder_val: 'soybean200_square'
+folder_test: 'soybean200_square'
+df_classid_classname: False

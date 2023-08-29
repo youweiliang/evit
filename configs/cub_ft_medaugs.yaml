@@ -1,0 +1,4 @@
+defaults:
+    dataset: 'datasets/cub.yaml'
+    settings: 'settings/ft.yaml'
+    augs: 'augs/medaugs.yaml'

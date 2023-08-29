@@ -1,0 +1,10 @@
+dataset_name: 'movienet4'
+dataset_root_path: '../../data/movienet/'
+df_train: '4_train.csv'
+df_trainval: 4_train_val.csv
+df_val: '4_val.csv'
+df_test: '4_test.csv'
+folder_train: 'images'
+folder_val: 'images'
+folder_test: 'images'
+df_classid_classname: '4_classid_classname.csv'

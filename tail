@@ -1,0 +1,2 @@
+  File "main.py", line 510
+SyntaxError: Non-UTF-8 code starting with '\x92' in file main.py on line 510, but no encoding declared; see http://python.org/dev/peps/pep-0263/ for details

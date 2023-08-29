@@ -1,0 +1,10 @@
+random_resized_crop: True
+horizontal_flip: True
+
+ls: True
+sd: 0.1
+re: 0.3
+
+cm: True
+mu: True
+randaug: True

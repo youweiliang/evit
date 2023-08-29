@@ -1,0 +1,3 @@
+CUDA_VISIBLE_DEVICES=3 nohup python -u main.py --cfg configs/datasets/cub.yaml --lr 5e-4 --model deit_base_patch16_shrink_base > evit.out &
+CUDA_VISIBLE_DEVICES=3 nohup python -u main.py --cfg configs/datasets/cub.yaml --lr 1e-4 --model deit_base_patch16_shrink_base > evit.out &
+CUDA_VISIBLE_DEVICES=3 nohup python -u main.py --cfg configs/datasets/cub.yaml --lr 1e-3 --model deit_base_patch16_shrink_base > evit.out &

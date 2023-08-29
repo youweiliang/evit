@@ -1,0 +1,10 @@
+dataset_name: 'cotton'
+dataset_root_path: '../../data/cotton'
+df_train: 'train.csv'
+df_trainval: train_val.csv
+df_val: 'val.csv'
+df_test: 'test.csv'
+folder_train: 'cotton_square_new'
+folder_val: 'cotton_square_new'
+folder_test: 'cotton_square_new'
+df_classid_classname: False

@@ -1,0 +1,4 @@
+defaults:
+    dataset: 'datasets/dogs.yaml'
+    settings: 'settings/ft.yaml'
+    augs: 'augs/weakaugs.yaml'

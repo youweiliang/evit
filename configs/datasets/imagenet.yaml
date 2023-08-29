@@ -1,0 +1,10 @@
+dataset_name: 'imagenet'
+dataset_root_path: '../../data/ImageNet/CLS-LOC'
+df_train: 'train.csv'
+df_trainval: train_val.csv
+df_val: 'val.csv'
+df_test: 'test.csv'
+folder_train: 'train'
+folder_val: 'train'
+folder_test: 'val'
+df_classid_classname: False

@@ -76,7 +76,7 @@ def train_one_epoch(model: torch.nn.Module, criterion: DistillationLoss,
         metric_logger.update(loss=loss_value)
         metric_logger.update(lr=optimizer.param_groups[0]["lr"])
 
-        if torch.distributed.get_rank() == 0 and it % log_interval == 0:
+        if it % log_interval == 0:
             writer.add_scalar('loss', loss_value, it)
             writer.add_scalar('lr', optimizer.param_groups[0]["lr"], it)
             writer.add_scalar('keep_rate', keep_rate, it)

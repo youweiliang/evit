@@ -1,0 +1,15 @@
+# backbone
+classifier: 'avg_cls'
+
+# cropping:
+selector: 'rollout'
+dynamic_anchor: True
+anchor_class_token: True
+selector_num_tokens: 8
+
+# reducer related
+reducer: 'cls'
+
+# aggregator related
+# aggregator: True
+# aggregator_norm: True

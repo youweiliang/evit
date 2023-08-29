@@ -1,0 +1,4 @@
+model_name: 'cal_vit_b16'
+
+# epochs: 160
+# weight_decay: 0.00001

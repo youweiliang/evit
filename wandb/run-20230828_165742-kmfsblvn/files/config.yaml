@@ -1,0 +1,297 @@
+wandb_version: 1
+
+batch_size:
+  desc: null
+  value: 32
+epochs:
+  desc: null
+  value: 300
+test_speed:
+  desc: null
+  value: false
+only_test_speed:
+  desc: null
+  value: false
+fuse_token:
+  desc: null
+  value: 'true'
+base_keep_rate:
+  desc: null
+  value: 0.7
+shrink_epochs:
+  desc: null
+  value: 100
+shrink_start_epoch:
+  desc: null
+  value: 10
+drop_loc:
+  desc: null
+  value: (3, 6, 9)
+model:
+  desc: null
+  value: deit_base_patch16_shrink_base
+input_size:
+  desc: null
+  value: 224
+drop:
+  desc: null
+  value: 0.0
+drop_path:
+  desc: null
+  value: 0.1
+model_ema:
+  desc: null
+  value: true
+model_ema_decay:
+  desc: null
+  value: 0.99996
+model_ema_force_cpu:
+  desc: null
+  value: false
+opt:
+  desc: null
+  value: adamw
+opt_eps:
+  desc: null
+  value: 1.0e-08
+opt_betas:
+  desc: null
+  value: null
+clip_grad:
+  desc: null
+  value: null
+momentum:
+  desc: null
+  value: 0.9
+weight_decay:
+  desc: null
+  value: 0.05
+sched:
+  desc: null
+  value: cosine
+lr:
+  desc: null
+  value: 0.0001
+lr_noise:
+  desc: null
+  value: null
+lr_noise_pct:
+  desc: null
+  value: 0.67
+lr_noise_std:
+  desc: null
+  value: 1.0
+warmup_lr:
+  desc: null
+  value: 1.0e-06
+min_lr:
+  desc: null
+  value: 1.0e-05
+decay_epochs:
+  desc: null
+  value: 30
+warmup_epochs:
+  desc: null
+  value: 5
+cooldown_epochs:
+  desc: null
+  value: 10
+patience_epochs:
+  desc: null
+  value: 10
+decay_rate:
+  desc: null
+  value: 0.1
+color_jitter:
+  desc: null
+  value: 0.4
+aa:
+  desc: null
+  value: rand-m9-mstd0.5-inc1
+smoothing:
+  desc: null
+  value: 0.1
+train_interpolation:
+  desc: null
+  value: bicubic
+repeated_aug:
+  desc: null
+  value: true
+reprob:
+  desc: null
+  value: 0.25
+remode:
+  desc: null
+  value: pixel
+recount:
+  desc: null
+  value: 1
+resplit:
+  desc: null
+  value: false
+mixup:
+  desc: null
+  value: 0.8
+cutmix:
+  desc: null
+  value: 1.0
+cutmix_minmax:
+  desc: null
+  value: null
+mixup_prob:
+  desc: null
+  value: 1.0
+mixup_switch_prob:
+  desc: null
+  value: 0.5
+mixup_mode:
+  desc: null
+  value: batch
+teacher_model:
+  desc: null
+  value: regnety_160
+teacher_path:
+  desc: null
+  value: ''
+distillation_type:
+  desc: null
+  value: none
+distillation_alpha:
+  desc: null
+  value: 0.5
+distillation_tau:
+  desc: null
+  value: 1.0
+finetune:
+  desc: null
+  value: ''
+dataset_root_path:
+  desc: null
+  value: ../../data/cub/CUB_200_2011
+dataset_name:
+  desc: null
+  value: cub
+use_lmdb:
+  desc: null
+  value: false
+inat_category:
+  desc: null
+  value: name
+output_dir:
+  desc: null
+  value: .
+device:
+  desc: null
+  value: cuda
+seed:
+  desc: null
+  value: 0
+resume:
+  desc: null
+  value: ''
+start_epoch:
+  desc: null
+  value: 0
+eval:
+  desc: null
+  value: false
+visualize_mask:
+  desc: null
+  value: false
+n_visualization:
+  desc: null
+  value: 128
+dist_eval:
+  desc: null
+  value: true
+num_workers:
+  desc: null
+  value: 10
+pin_mem:
+  desc: null
+  value: true
+world_size:
+  desc: null
+  value: 1
+dist_url:
+  desc: null
+  value: env://
+custom_mean_std:
+  desc: null
+  value: false
+folder_train:
+  desc: null
+  value: images
+folder_val:
+  desc: null
+  value: images
+folder_test:
+  desc: null
+  value: images
+df_train:
+  desc: null
+  value: train.csv
+df_trainval:
+  desc: null
+  value: train_val.csv
+df_val:
+  desc: null
+  value: val.csv
+df_test:
+  desc: null
+  value: test.csv
+df_classid_classname:
+  desc: null
+  value: classid_classname.csv
+train_trainval:
+  desc: null
+  value: true
+cfg:
+  desc: null
+  value: configs/datasets/cub.yaml
+cfg_is:
+  desc: null
+  value: null
+cfg_method:
+  desc: null
+  value: null
+project_name:
+  desc: null
+  value: TokenDroppingFusion
+distributed:
+  desc: null
+  value: false
+nb_classes:
+  desc: null
+  value: 200
+_wandb:
+  desc: null
+  value:
+    python_version: 3.8.17
+    cli_version: 0.15.8
+    framework: torch
+    is_jupyter_run: false
+    is_kaggle_kernel: false
+    start_time: 1693213072.436362
+    t:
+      1:
+      - 1
+      - 41
+      - 51
+      - 55
+      - 63
+      2:
+      - 1
+      - 41
+      - 51
+      - 55
+      - 63
+      3:
+      - 16
+      - 17
+      - 23
+      - 37
+      4: 3.8.17
+      5: 0.15.8
+      8:
+      - 6

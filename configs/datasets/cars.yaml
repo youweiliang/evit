@@ -1,0 +1,10 @@
+dataset_name: 'cars'
+dataset_root_path: '../../data/cars'
+df_train: 'train.csv'
+df_trainval: train_val.csv
+df_val: 'val.csv'
+df_test: 'test.csv'
+folder_train: 'car_ims'
+folder_val: 'car_ims'
+folder_test: 'car_ims'
+df_classid_classname: 'classid_classname.csv'

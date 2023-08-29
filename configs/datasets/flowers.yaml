@@ -1,0 +1,10 @@
+dataset_name: 'flowers'
+dataset_root_path: '../../data/flowers/flowers-102'
+df_train: 'train.csv'
+df_trainval: train_val.csv
+df_val: 'val.csv'
+df_test: 'test.csv'
+folder_train: 'jpg'
+folder_val: 'jpg'
+folder_test: 'jpg'
+df_classid_classname: 'classid_classname.csv'

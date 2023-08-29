@@ -1,0 +1,10 @@
+dataset_name: 'daf'
+dataset_root_path: '../../data/daf'
+df_train: 'train.csv'
+df_trainval: train_val.csv
+df_val: 'val.csv'
+df_test: 'test.csv'
+folder_train: 'faces'
+folder_val: 'faces'
+folder_test: 'faces'
+df_classid_classname: 'classid_classname.csv'

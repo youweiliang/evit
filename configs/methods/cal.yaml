@@ -1,0 +1,4 @@
+model_name: 'cal_resnet101'
+
+epochs: 160
+weight_decay: 0.00001

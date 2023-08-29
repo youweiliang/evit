@@ -1,0 +1,10 @@
+dataset_name: 'dafb'
+dataset_root_path: '../../data/daf'
+df_train: 'train.csv'
+df_trainval: train_val.csv
+df_val: 'val.csv'
+df_test: 'test.csv'
+folder_train: 'fullMin256'
+folder_val: 'fullMin256'
+folder_test: 'fullMin256'
+df_classid_classname: 'classid_classname.csv'

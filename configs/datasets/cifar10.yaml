@@ -1,0 +1,2 @@
+dataset_name: 'cifar10'
+dataset_root_path: '../../data/cifar10'

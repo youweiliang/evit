@@ -630,6 +630,7 @@ def _create_evit(variant, pretrained=False, default_cfg=None, **kwargs):
         representation_size=repr_size,
         pretrained_filter_fn=checkpoint_filter_fn,
         pretrained_custom_load='npz' in default_cfg['url'],
+        pretrained_strict=False,
         **kwargs)
     return model
 
