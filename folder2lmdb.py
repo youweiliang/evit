@@ -152,7 +152,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument(
         '--dir', type=str, required=True, 
-        help="The dataset directory to process, which should contrain a 'train' and a 'val' subfolder."
+        help="The dataset directory to process, which should contain a 'train' and a 'val' subfolder."
              "The script will produce the lmdb files under the same directory."
     )
     args = parser.parse_args()
