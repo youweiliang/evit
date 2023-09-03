@@ -119,7 +119,7 @@ def drop_path(x, drop_prob: float = 0., training: bool = False):
 
 
 class DropPath(nn.Module):
-    """Drop paths (Stochastic Depth) per sample  (when applied in main path of residual blocks).
+    """Drop paths (Stochastic Depth) per sample (when applied in main path of residual blocks).
     """
     def __init__(self, drop_prob=None):
         super(DropPath, self).__init__()
@@ -409,7 +409,7 @@ class EViT(nn.Module):
             x = torch.cat((cls_token, self.dist_token.expand(x.shape[0], -1, -1), x), dim=1)
 
         # for input with another resolution, interpolate the positional embedding.
-        # used for finetining a ViT on images with larger size.
+        # used for finetuning a ViT on images with larger size.
         pos_embed = self.pos_embed
         if x.shape[1] != pos_embed.shape[1]:
             assert h == w  # for simplicity assume h == w
